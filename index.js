@@ -54,38 +54,38 @@ app.get('/get-cookies', (req, res) => {
 io.on('connection', (socket) => {
     console.log(socket.id);
 
-    Room.find().then(result =>{
+    Auction.find().then(result =>{
         console.log('output-rooms', result)
         socket.emit('output-rooms', result)
     })
     
     socket.on('create-room', name => {
         //console.log('Sala: ', name)
-        const room = new Room({ name });
-        room.save().then(result =>{
+        const auction = new auction({ name });
+        auction.save().then(result =>{
             io.emit('room-created', result)
         })
     })
-    socket.on('join', ({ name, room_id, user_id }) => {
+    socket.on('join', ({ name, auction_id, user_id }) => {
         const { error, user } = addUser({
             socket_id: socket.id,
             name,
-            room_id,
+            auction_id,
             user_id
         })
-        socket.join(room_id);
+        socket.join(auction_id);
         if (error) {
             console.log('Error de ingreso', error)
         } else {
             console.log('Ingreso', user)
         }
     })
-    socket.on('sendMessage', (message, room_id, callback)=>{
+    socket.on('sendMessage', (message, auction_id, callback)=>{
         const user = getUser(socket.id);
         const msgToStore = {
             name:user.name,
             user_id:user.user_id,
-            room_id,
+            auction_id,
             text:message
         }
         console.log('message', msgToStore)
@@ -96,8 +96,8 @@ io.on('connection', (socket) => {
         })
         
     })
-    socket.on('get-messages-history', room_id => {
-        Message.find({ room_id }).then(result => {
+    socket.on('get-messages-history', auction_id => {
+        Message.find({ auction_id }).then(result => {
             socket.emit('output-messages', result)
         })
     })
