@@ -28,5 +28,5 @@ const auctionSchema = new mongoose.Schema({
         default: 'pública'
     }
 });
-const Subasta = mongoose.model('Subasta', subastaSchema);
-module.exports = Subasta;
+const Auction = mongoose.model('auction', auctionSchema);
+module.exports = Auction;

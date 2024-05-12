@@ -33,11 +33,11 @@ const mongoose = require('mongoose');
 const socketio = require('socket.io');
 const { callbackify } = require('util');
 const io = socketio(http);
-const mongoDB = "mongodb+srv://juandaviduarte911:<password>@tesorosenlinea.6yyvsgk.mongodb.net/?retryWrites=true&w=majority&appName=TesorosEnLinea";
+const mongoDB = "mongodb+srv://juandaviduarte911:Jddr0911@tesorosenlinea.mwtlu6x.mongodb.net/?retryWrites=true&w=majority&appName=TesorosEnLinea";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => console.log('connected')).catch(err => console.log(err))
 const {addUser, getUser, removeUser} = require('./helper');
 const PORT = process.env.PORT || 5001
-const Room = require('./models/Auction');
+const Auction = require('./models/Auction');
 const Message = require('./models/Message')
 
 app.get('/set-cookies', (req, res) => {

@@ -8,12 +8,12 @@ const users = [];
     se revisa si el usuario YA EXISTE en sala, si es así, generá un error, de lo 
     contrario el usuario es añadido al Arreglo.
 */
-const addUser = ({ socket_id, name, user_id, room_id }) => {
-    const exist = users.find(user => user.room_id === room_id && user.user_id === user_id);
+const addUser = ({ socket_id, name, user_id, auction_id }) => {
+    const exist = users.find(user => user.auction_id === auction_id && user.user_id === user_id);
     if (exist) {
         return { error: 'El usuario ya está en la sala.' }
     }
-    const user = { socket_id, name, user_id, room_id };
+    const user = { socket_id, name, user_id, auction_id };
     users.push(user)
     console.log('Usuarios', users)
     return { user }
