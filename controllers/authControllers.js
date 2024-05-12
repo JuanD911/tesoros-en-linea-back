@@ -12,7 +12,7 @@ const createJWT = id => {
     })
 }
 const alertError = (err) => {
-    let errors = { name: '', email: '', password: '' }
+    let errors = { name: '', email: '', clave: '' }
 
     console.log('err message', err.message);
     console.log('err code', err.code);
@@ -22,7 +22,7 @@ const alertError = (err) => {
     }
 
     if (err.message === 'incorrect pwd') {
-        errors.password = 'Contraseña incorrecta.';
+        errors.clave = 'Contraseña incorrecta.';
     }
 
     if (err.code === 11000) {
@@ -43,9 +43,9 @@ const alertError = (err) => {
     Está función nos permite crear un token de JWT a partir de que el usuario se registre.
 */
 module.exports.signup = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, clave } = req.body;
     try {
-        const user = await User.create({name, email, password});
+        const user = await User.create({name, email, clave});
         const token = createJWT(user._id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
         res.status(201).json({user});
@@ -58,9 +58,9 @@ module.exports.signup = async (req, res) => {
     Está función nos permite crear un token de JWT a partir de que el usuario se logee.
 */
 module.exports.login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, clave } = req.body;
     try {
-        const user = await User.login(email, password);
+        const user = await User.login(email, clave);
         const token = createJWT(user._id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
         res.status(201).json({ user });
