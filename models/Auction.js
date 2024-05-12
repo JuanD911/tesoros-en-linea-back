@@ -2,30 +2,36 @@ const mongoose = require('mongoose');
 
 // Se define el esquema del modelo 'Subasta (Auction)' para enviar al cluster de: MongoDB Atlas.
 const auctionSchema = new mongoose.Schema({
-    product: {
+    nombre_producto: {
         type: String,
         required: true
     },
-    photo: {
+    foto_producto: {
         type: String,
         required: true
     },
-    description: {
+    descripcion_producto: {
         type: String,
         required: true
     },
-    initial_price: {
+    precio_inicial: {
         type: Number,
         required: true
     },
-    min_price: {
+    monto_puja: {
         type: Number,
         required: true
     },
-    disponibility: {
+    tipo_subasta: {
         type: String,
         enum: ['privada', 'pública'],
         default: 'pública'
+    },
+    contraseña_subasta: {
+        type: String,
+        required: function() {
+            return this.tipo_subasta === 'privada';
+        }
     }
 });
 const Auction = mongoose.model('auction', auctionSchema);

@@ -15,7 +15,15 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate: [isEmail, 'Por favor ingrese un correo electrónico válido.']
     },
-    password: {
+    telefono: {
+        type: String,
+        required: [true, 'Ingrese un numero de contacto por favor']
+    },
+    pais: {
+        type: String,
+        required: [true, 'Por favor ingrese el pais de origen']
+    },
+    clave: {
         type: String, 
         required: [true,'Por favor ingrese una contraseña válida.'],
         minlength: [6, 'La contraseña debe tener almenos 6 caracteres.']
@@ -28,7 +36,7 @@ const userSchema = new mongoose.Schema({
 */
 userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
+    this.clave = await bcrypt.hash(this.clave, salt);
     next()
 })
 
@@ -36,10 +44,10 @@ userSchema.pre('save', async function (next) {
     Está función realiza el proceso de autenticación con el cluster de MongoDb Atlas
     donde se realiza una comparación con lo que recibe y lo que está guardado.
 */
-userSchema.statics.login = async function (email, password) {
+userSchema.statics.login = async function (email, clave) {
     const user = await this.findOne({ email });
     if (user) {
-        const isAuthenticated = await bcrypt.compare(password, user.password);
+        const isAuthenticated = await bcrypt.compare(clave, user.clave);
         if (isAuthenticated) {
             return user;
         }
